@@ -1,0 +1,165 @@
+﻿<Window x:Class="LangStudio.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:LangStudio"
+        xmlns:helpers="clr-namespace:LangStudio.Helpers"
+        Title="LangStudio"
+        Height="600"
+        Width="900"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResizeWithGrip"
+        Style="{StaticResource MaterialDesignWindow}"
+        Icon="/Views/Logo_mini.png" WindowStyle="None">
+        <Window.InputBindings>
+            <KeyBinding Key="S"
+                    Modifiers="Control"
+                    Command="{Binding SaveCommand}" />
+        </Window.InputBindings>
+
+    <DockPanel LastChildFill="True">
+        <Grid DockPanel.Dock="Top"
+              Height="32"
+              Background="{DynamicResource MaterialDesign.Brush.Primary}"
+              MouseLeftButtonDown="TopBar_MouseLeftButtonDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="LangStudio"
+                       VerticalAlignment="Center"
+                       Margin="16,0"
+                       FontSize="16"
+                       FontWeight="Bold" />
+
+            <Menu Grid.Column="1">
+                <MenuItem Header="Fichier" Height="32">
+                    <MenuItem Header="Ouvrir"  Command="{Binding OpenFolderCommand}" />
+                    <MenuItem Header="Enregistrer" Command="{Binding SaveCommand}" />
+                </MenuItem>
+            </Menu>
+            <TextBlock Grid.Column="2"></TextBlock>
+
+            <StackPanel Orientation="Horizontal"
+            Grid.Column="3"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top">
+                <Button Width="32" Height="32"
+                ToolTip="Réduire"
+                Style="{StaticResource MaterialDesignToolButton}"
+                Foreground="{DynamicResource MaterialDesignForground}"
+                Click="MinimizeButton_Click">
+                    <materialDesign:PackIcon Kind="WindowMinimize" Width="18" Height="18" />
+                </Button>
+                <Button Width="32" Height="32"
+                ToolTip="Agrandir / Restaurer"
+                Style="{StaticResource MaterialDesignToolButton}"
+                Foreground="{DynamicResource MaterialDesignForground}"
+                Click="MaximizeRestoreButton_Click">
+                    <materialDesign:PackIcon Kind="WindowMaximize" Width="18" Height="18" />
+                </Button>
+                <Button Width="32" Height="32"
+                ToolTip="Fermer"
+                Style="{StaticResource MaterialDesignToolButton}"
+                Foreground="{DynamicResource MaterialDesignForground}"
+                Click="CloseButton_Click">
+                    <materialDesign:PackIcon Kind="Close" Width="18" Height="18" />
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <CheckBox x:Name="IncompleteFilterToggle"
+                  Content="Afficher traductions incomplètes"
+                  Margin="16,0,8,0"
+                  VerticalAlignment="Center"
+                  IsChecked="{Binding ShowIncompleteOnly}" />
+
+            <TextBox x:Name="SearchBox"
+                     Grid.Column="1"
+                     Margin="16,0,8,0"
+                     VerticalAlignment="Center"
+                     BorderThickness="0 0 0 1"
+                     Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                         materialDesign:HintAssist.Hint="Rechercher..." />
+
+            <TreeView x:Name="TranslationTreeView"
+                      ItemsSource="{Binding TreeNodes}"
+                      Grid.Column="0"
+                      Grid.Row="1"
+                      BorderBrush="Black"
+                      BorderThickness="0 0 1 0"
+                      SelectedItemChanged="TranslationTreeView_SelectedItemChanged">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <TextBlock Text="{Binding Name}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{DynamicResource MaterialDesignForground}" />
+                                    <Setter Property="FontWeight" Value="Normal" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsComplete}" Value="False">
+                                            <Setter Property="Foreground" Value="OrangeRed" />
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+
+            <StackPanel Grid.Column="1"
+                        Grid.Row="1"
+                        x:Name="TranslationDetailsPanel"
+                        Margin="10"
+                        DataContext="{Binding SelectedNode.Entry}"
+                        Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0"
+                        FontWeight="Bold"
+                        FontSize="16"
+                        Margin="10"
+                        Background="{DynamicResource MaterialDesignBackground}"
+                        BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                        BorderThickness="0 0 0 1"
+                        Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+                <ItemsControl
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    ItemsSource="{Binding Translations}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="4" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding Lang, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 8 0" />
+                                <TextBox Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1">
+                                </TextBox>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>
