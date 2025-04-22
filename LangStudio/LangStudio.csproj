@@ -3,15 +3,32 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <EnableMsixTooling>true</EnableMsixTooling>
     <PublishProfile>Properties\PublishProfiles\win10-$(Platform).pubxml</PublishProfile>
     <Authors>Anthony Chaussin</Authors>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-    <PackageIcon>7d80b568-830c-4898-bd9d-a156e2d822b8.png</PackageIcon>
+    <PackageIcon>Logo.png</PackageIcon>
     <ApplicationIcon>logo.ico</ApplicationIcon>
+    <SignAssembly>False</SignAssembly>
+    <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
+    <Title>$(AssemblyName)</Title>
+    <PackageProjectUrl>https://anthony.chaussin.net/LangStudio/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/anthonychaussin/LangStudio</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,13 +38,6 @@
 
   <ItemGroup>
     <Content Include="logo.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\..\..\Downloads\7d80b568-830c-4898-bd9d-a156e2d822b8.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +62,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
