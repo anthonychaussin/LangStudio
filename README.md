@@ -20,7 +20,7 @@ Conçue pour les développeurs, par un développeur. 🛠️
 
 ## 📥 Téléchargement  
 
-👉 [Consultez la page des téléchargements](http://vps-1dc2aeb1.vps.ovh.net/LangStudio/) *(À compléter avec l’URL de ta page HTML)*  
+👉 [Consultez la page des téléchargements](http://vps-1dc2aeb1.vps.ovh.net/LangStudio/)
 
 | Architecture | Téléchargement          |
 |--------------|-------------------------|
