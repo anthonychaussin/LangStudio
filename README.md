@@ -1,4 +1,4 @@
-# 🌐 LangStudio  
+# <img src="https://github.com/user-attachments/assets/5ce46e41-9e6b-4f25-8d4c-2ec4c15973f8" width="40" height="40"> LangStudio 
 
 **LangStudio** est une application desktop open source qui simplifie la gestion des fichiers de traduction pour les projets Angular utilisant `@ngx-translate`.  
 Conçue pour les développeurs, par un développeur. 🛠️  
